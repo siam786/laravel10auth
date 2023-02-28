@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CustomRegisterController;
 
 
@@ -21,7 +22,13 @@ Route::get('/', function () {
 
     //Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 Route::get('register',[CustomRegisterController::class,'RegisterFromShow'])->name('register');
-Route::post('register-user',[CustomRegisterController::class,'RegisterUser'])->name('register.store');
-Route::post('register',[CustomRegisterController::class,'logout'])->name('logout');
+Route::get('login',[CustomRegisterController::class,'loginFromShow'])->name('login');
+Route::post('login',[CustomRegisterController::class,'loginUser'])->name('login.store');
+Route::post('register',[CustomRegisterController::class,'RegisterUser'])->name('register.store');
+
+Route::middleware(['auth'])->group(function(){
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::post('logout',[CustomRegisterController::class,'logout'])->name('logout');
+});
